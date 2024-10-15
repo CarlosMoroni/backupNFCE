@@ -1,0 +1,3 @@
+servidor_ip: 192.168.4.151
+servidor_porta: 8080
+pasta_destino: C:/Users/Home/Desktop/pasta_destino

@@ -1,4 +1,4 @@
-servidor_ip: 192.168.0.100
+servidor_ip: 192.168.4.151
 servidor_porta: 8080
 name_caixa: teste
 name_empressa: SK-RB
