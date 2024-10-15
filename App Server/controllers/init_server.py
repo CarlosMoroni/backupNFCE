@@ -2,13 +2,7 @@ import socket
 import os
 
 def iniciar_servidor(ip, porta, pasta_destino):
-    """
-    Inicia o servidor para receber arquivos de clientes.
 
-    ip: Endereço IP onde o servidor irá escutar.
-    porta: Porta onde o servidor ficará escutando.
-    pasta_destino: Pasta onde os arquivos recebidos serão salvos.
-    """
     if not os.path.exists(pasta_destino):
         os.makedirs(pasta_destino)  # Cria a pasta de destino se não existir
 
@@ -23,8 +17,18 @@ def iniciar_servidor(ip, porta, pasta_destino):
             with conn:
                 print(f"Conectado por {addr}")
 
-                # Recebe os dados do arquivo
-                dados = b""
+                # Recebe o nome do subdiretório (string enviada pelo cliente)
+                nome_subdiretorio = conn.recv(1024).decode('utf-8')
+                print(f"Nome do subdiretório recebido: {nome_subdiretorio}")
+                
+                caminho_completo = os.path.join(pasta_destino, nome_subdiretorio)
+                
+                if not os.path.exists(caminho_completo):
+                    os.makedirs(caminho_completo)
+                    print(f"Subdiretório {caminho_completo} criado.")
+                    
+                
+                dados = b"" 
                 while True:
                     parte = conn.recv(1024)  # Recebe os dados em blocos de 1024 bytes
                     if not parte:
@@ -32,7 +36,7 @@ def iniciar_servidor(ip, porta, pasta_destino):
                     dados += parte
 
                 # Salva o arquivo na pasta de destino
-                nome_arquivo = os.path.join(pasta_destino, "arquivo_recebido")
+                nome_arquivo = os.path.join(caminho_completo, "arquivo_recebido")
                 with open(nome_arquivo, 'wb') as f:
                     f.write(dados)
 
