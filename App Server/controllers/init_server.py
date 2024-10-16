@@ -4,7 +4,7 @@ import os
 def iniciar_servidor(ip, porta, pasta_destino):
 
     if not os.path.exists(pasta_destino):
-        os.makedirs(pasta_destino)  # Cria a pasta de destino se não existir
+        os.makedirs(pasta_destino)
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, int(porta)))
@@ -13,7 +13,7 @@ def iniciar_servidor(ip, porta, pasta_destino):
         print(f"Servidor escutando em {ip}:{porta}...")
 
         while True:
-            conn, addr = s.accept()  # Aceita uma conexão de um cliente
+            conn, addr = s.accept()
             
             with conn:
                 print(f"Conectado por {addr}")
