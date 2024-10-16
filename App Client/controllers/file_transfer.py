@@ -1,24 +1,22 @@
-import socket  # Biblioteca para comunicação via rede (sockets)
+import socket
 import os
 
 def enviar_arquivo(servidor_ip, servidor_porta, pasta, nome_subdiretorio):
-    """
-    Conecta-se ao servidor via socket e envia um arquivo binário.
-
-    servidor_ip: IP do servidor para onde o arquivo será enviado.
-    servidor_porta: Porta do servidor.
-    caminho_arquivo: Caminho do arquivo a ser enviado.
-    """
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:  # Cria o socket TCP
-        s.connect((servidor_ip, int(servidor_porta)))  # Conecta ao servidor com IP e porta
-        s.sendall(nome_subdiretorio.encode('utf-8'))
-      
-        # Percorre todos os arquivos da pasta
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((servidor_ip, int(servidor_porta)))
+        
         for arquivo in os.listdir(pasta):
             caminho_arquivo = os.path.join(pasta, arquivo)
             
-            with open(caminho_arquivo, 'rb') as f:  # Abre o arquivo no modo binário para leitura
-                dados = f.read()  # Lê todo o conteúdo do arquivo
-                s.sendall(dados)  # Envia os dados do arquivo para o servidor
+            with open(caminho_arquivo, 'r') as f: 
+                conteudo_arquivo = f.read() 
+            
+            # Monta a requisição
+            requisicao = f"{nome_subdiretorio} |||{os.path.basename(caminho_arquivo)} |||{conteudo_arquivo}"
+            tamanho_requisicao = len(requisicao)
 
-            print(f'Arquivo {os.path.basename(caminho_arquivo)} enviado com sucesso!')
+            # Envia o tamanho da requisição primeiro (cabeçalho)
+            s.sendall(f"{tamanho_requisicao:08}".encode('utf-8')) 
+            s.sendall(requisicao.encode('utf-8')) 
+            
+            print(f'Arquivo: {os.path.basename(caminho_arquivo)} enviado com sucesso!')
