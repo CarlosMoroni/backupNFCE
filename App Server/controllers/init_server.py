@@ -9,7 +9,7 @@ def iniciar_servidor(ip, porta, pasta_destino):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, int(porta)))
         s.listen()
-
+        
         print(f"Servidor escutando em {ip}:{porta}...")
 
         while True:
