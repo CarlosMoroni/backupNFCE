@@ -1,4 +1,4 @@
 servidor_ip: 192.168.4.151
 servidor_porta: 8080
-nome_subdiretorio: caixa03
+nome_caixa: caixa03
 path_files: C:/Users/Home/Documents/teste_backup
