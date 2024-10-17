@@ -17,10 +17,16 @@ def iniciar_servidor(ip, porta, pasta_destino):
             
             with conn:
                 print(f"Conectado por {addr}")
-
-                tamanho_total = int(conn.recv(8).decode('utf-8'))
-                print(f"Tamanho total da requisição recebida: {tamanho_total} bytes")
                 
+                tamanho_total_raw = conn.recv(8).decode('utf-8')
+
+                # Valida se o tamanho recebido é um número
+                if not tamanho_total_raw.strip().isdigit():
+                    print(f"Erro ao receber tamanho da requisição. Recebido: {tamanho_total_raw}")
+                    return
+                
+                tamanho_total = int(tamanho_total_raw)
+
                 dados_recebidos = b""
                 while len(dados_recebidos) < tamanho_total:
                     parte = conn.recv(1024)
@@ -30,9 +36,9 @@ def iniciar_servidor(ip, porta, pasta_destino):
 
                 requisicao = dados_recebidos.decode('utf-8')
 
-                partes = requisicao.split('|||')
+                arrayDataRequisicao = requisicao.split('|||')
 
-                nome_subdiretorio, nome_arquivo, dados_arquivo = partes
+                nome_subdiretorio, nome_arquivo, dados_arquivo = arrayDataRequisicao
                 nome_subdiretorio = nome_subdiretorio.strip()
                 nome_arquivo = nome_arquivo.strip()
                 dados_arquivo = dados_arquivo.strip()

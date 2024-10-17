@@ -31,11 +31,12 @@ class FileHandler(FileSystemEventHandler):
 
                 # Monta a requisição com o caminho relativo
                 requisicao = f"{path} |||{nome_arquivo} |||".encode('utf-8') + conteudo_arquivo
-                tamanho_requisicao = len(requisicao)
+                tamanho_requisicao = f"{len(requisicao):08}".encode('utf-8')
                 
                 # Envia o tamanho da requisição primeiro (cabeçalho)
-                s.sendall(f"{tamanho_requisicao:08}".encode('utf-8'))
+                s.sendall(tamanho_requisicao)
                 s.sendall(requisicao)
+                print('tamanho do envio ', f"{tamanho_requisicao}")
 
                 print(f'Arquivo: {path} enviado com sucesso!')
         
