@@ -1,5 +1,7 @@
 import os
 
+caminho_txt_audit = "audit.txt"
+
 # Função para ler o arquivo de configuração
 def ler_configuracoes():
     configuracoes = {}  
@@ -8,6 +10,68 @@ def ler_configuracoes():
             chave, valor = linha.strip().split(': ')  # Divide a linha em chave e valor
             configuracoes[chave] = valor  # Armazena no dicionário
     return configuracoes  # Retorna o dicionário com as configurações
+
+    
+def menu_primeira_inicializacao():
+    print("\nEscolha uma opção:")
+    print("1. Primeira Inicialização")
+    print("2. Modo Padrão")
+    print("3. Auditoria")
+    print("4. Sair")
+    
+    opcao = input("Digite o número da opção desejada: ")
+    try:
+        numero = int(opcao)
+        return numero
+    except ValueError:
+        return 404
+
+
+def menu_demais_chamados():
+    print("\nEscolha uma opção:")
+    print("1. Modo Padrão")
+    print("2. Auditoria")
+    print("3. Sair")
+    
+    opcao = input("Digite o número da opção desejada: ")
+    try:
+        numero = int(opcao)
+        return numero
+    except ValueError:
+        return 404
+
+def submenu_audit_ou_primeira_inicializacao():
+    print("\nEscolha uma opção:")
+    print("1. Horario comercial")
+    print("2. Envio sem limitações")
+    print("3. Voltar")
+    
+    opcao = input("Digite o número da opção desejada: ")
+    return int(opcao)
+
+
+def salvar_nome_arquivo_auditoria(nome_arquivo):
+    try:
+        # Abre o arquivo .txt em modo de adição (append)
+        with open(caminho_txt_audit, 'a') as arquivo:
+            arquivo.write(nome_arquivo + '\n')  # Escreve o nome do arquivo e pula uma linha
+        print(f"Nome do arquivo '{nome_arquivo}' salvo com sucesso em '{caminho_txt_audit}'\n")
+    except Exception as e:
+        print(f"Erro ao salvar o nome do arquivo: {e}")
+    except FileNotFoundError as erro:
+        print(f'Arquivo nao encontrado: {erro}')
+
+
+def checa_arquivo_audit():
+    try:
+        # Verifica se o arquivo existe e se está vazio
+        if os.path.exists(caminho_txt_audit) and os.path.getsize(caminho_txt_audit) > 0:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print(f"Erro ao verificar o arquivo: {e}")
+        return True
 
 
 ascii_art = r"""

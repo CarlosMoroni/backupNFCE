@@ -1,5 +1,6 @@
 import socket
 import os
+from utils.config import salvar_nome_arquivo_auditoria
 from watchdog.events import FileSystemEventHandler
 
 class FileHandler(FileSystemEventHandler):
@@ -20,9 +21,9 @@ class FileHandler(FileSystemEventHandler):
 
     def enviar_arquivo(self, caminho_arquivo):
         nome_arquivo = os.path.basename(caminho_arquivo)
-        caminho_relativo = os.path.relpath(caminho_arquivo, start=self.pasta_monitorada)
-        caminho_completo = self.nome_caixa + '/' + caminho_relativo
-        path= os.path.dirname(caminho_completo)
+        caminho_relativo_diretorio_alvo = os.path.relpath(caminho_arquivo, start=self.pasta_monitorada)
+        caminho_completo_arquivo_diretorio_destino = self.nome_caixa + '/' + caminho_relativo_diretorio_alvo
+        path_arquivo_diretorio_destino = os.path.dirname(caminho_completo_arquivo_diretorio_destino)
         
         try:
             if not os.path.exists(caminho_arquivo):
@@ -41,13 +42,14 @@ class FileHandler(FileSystemEventHandler):
                     conteudo_arquivo = f.read()
 
                 # Monta a requisição com o caminho relativo
-                requisicao = f"{path} |||{nome_arquivo} |||".encode('utf-8') + conteudo_arquivo
+                requisicao = f"{path_arquivo_diretorio_destino} |||{nome_arquivo} |||".encode('utf-8') + conteudo_arquivo
                 tamanho_requisicao = f"{len(requisicao):08}".encode('utf-8')
                 
                 # Envia o tamanho da requisição primeiro (cabeçalho)
                 s.sendall(tamanho_requisicao)
                 s.sendall(requisicao)
-                print(f'Arquivo: {path} enviado com sucesso!')
+                print(f'Arquivo: {nome_arquivo} enviado com sucesso!')
+                salvar_nome_arquivo_auditoria(nome_arquivo)
                 
         except FileNotFoundError as fnf_error:
             print(f"Erro: {fnf_error}")
