@@ -43,8 +43,33 @@ def enviar_arquivos_existentes(servidor_ip, servidor_porta, pasta_monitorada, no
             file_handler.enviar_arquivo(caminho_arquivo)
 
 
+def enviar_arquivos_existentes_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
+    blocos = 400 
+    pausa = 5
+    contador = 0
+    file_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
+
+    for root, dirs, files in os.walk(pasta_monitorada):
+        for item in files:
+            caminho_arquivo = os.path.join(root, item)
+            file_handler.enviar_arquivo(caminho_arquivo)
+            contador += 1
+            
+            # Pausa após cada bloco de 500 arquivos enviados
+            if contador % blocos == 0:
+                print(f"\nPausa de {pausa} segundos após o envio de {blocos} arquivos...")
+                time.sleep(pausa)
+                
+    print("Envio de todos os arquivos concluído.")
+
+
 def primeira_inicializacao(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
     enviar_arquivos_existentes(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+    monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+
+
+def primeira_inicializacao_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
+    enviar_arquivos_existentes_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
     monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
 
 
@@ -65,7 +90,16 @@ if __name__ == "__main__":
                 menu_primeira = menu_primeira_inicializacao()
 
                 if menu_primeira == 1:
-                    primeira_inicializacao(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    os.system('cls') # limpa o console
+                    valor_submenu = submenu_audit_ou_primeira_inicializacao()
+                    
+                    if valor_submenu == 1:
+                        primeira_inicializacao_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    elif valor_submenu == 2:
+                        primeira_inicializacao(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    elif valor_submenu == 3:
+                        os.system('cls') # limpa o console
+                            
                 elif menu_primeira == 2:
                     monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
                 elif menu_primeira == 3:
