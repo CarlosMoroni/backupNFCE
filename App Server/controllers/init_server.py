@@ -8,8 +8,9 @@ def iniciar_servidor(ip, porta, pasta_destino):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, int(porta)))
-        s.listen()
-        
+        s.listen(50)
+        s.settimeout(None)
+             
         print(f"Servidor escutando em {ip}:{porta}...")
 
         while True:
@@ -23,7 +24,7 @@ def iniciar_servidor(ip, porta, pasta_destino):
                 # Valida se o tamanho recebido é um número
                 if not tamanho_total_raw.strip().isdigit():
                     print(f"Erro ao receber tamanho da requisição. Recebido: {tamanho_total_raw}")
-                    return
+                    continue
                 
                 tamanho_total = int(tamanho_total_raw)
 
@@ -34,7 +35,14 @@ def iniciar_servidor(ip, porta, pasta_destino):
                         break
                     dados_recebidos += parte
 
-                requisicao = dados_recebidos.decode('utf-8')
+                try:
+                    requisicao = dados_recebidos.decode('utf-8')
+                except UnicodeDecodeError as e:
+                    print(f"Erro ao decodificar os dados recebidos: {e}")
+                    continue
+                except Exception as e:
+                    print(f"Erro inesperado ao decodificar os dados: {e}")
+                    continue
 
                 arrayDataRequisicao = requisicao.split('|||')
 
@@ -43,11 +51,6 @@ def iniciar_servidor(ip, porta, pasta_destino):
                 nome_arquivo = nome_arquivo.strip()
                 dados_arquivo = dados_arquivo.strip()
 
-                # print(f"Nome do subdiretório: {nome_subdiretorio}")
-                # print(f"Nome do arquivo: {nome_arquivo}")
-                # print(f"Dados do arquivo: {dados_arquivo[50]}...")  # Exibe apenas os primeiros 50 caracteres dos dados
-
-                # Salva o arquivo na pasta de destino
                 caminho_completo = os.path.join(pasta_destino, nome_subdiretorio)
                 
                 if not os.path.exists(caminho_completo):

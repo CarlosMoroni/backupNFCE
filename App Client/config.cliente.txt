@@ -1,4 +1,4 @@
 servidor_ip: 192.168.4.151
 servidor_porta: 8080
-nome_caixa: caixa03
-path_files: D:\Arquivos TI\bkp caixa 2\Arquivos\NFCE\Aprovadas\30487384000260\202208
+nome_caixa: caixa01
+path_files: C:\Users\Home\Documents\teste_backup

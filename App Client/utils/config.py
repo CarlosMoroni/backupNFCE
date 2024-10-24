@@ -11,6 +11,17 @@ def ler_configuracoes():
             configuracoes[chave] = valor  # Armazena no dicionário
     return configuracoes  # Retorna o dicionário com as configurações
 
+
+def captura_dados_config_cliente_txt():
+    config = ler_configuracoes()
+    servidor_ip = config['servidor_ip']
+    servidor_porta = config['servidor_porta'] 
+    nome_caixa = config['nome_caixa']
+    pasta_monitorada = config['path_files']
+    
+    return servidor_ip, servidor_porta, nome_caixa, pasta_monitorada
+   
+    
     
 def menu_primeira_inicializacao():
     print("\nEscolha uma opção:")

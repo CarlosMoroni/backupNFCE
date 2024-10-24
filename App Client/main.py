@@ -1,6 +1,5 @@
 import time
 import os
-import signal
 import keyboard
 from utils.config import *
 from watchdog.observers import Observer
@@ -9,6 +8,7 @@ from controllers.file_transfer import *
 mostrar_menu = False
 
 def monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
+    
     event_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
     
     observer = Observer()
@@ -41,25 +41,25 @@ def enviar_arquivos_existentes(servidor_ip, servidor_porta, pasta_monitorada, no
             caminho_arquivo = os.path.join(root, item)
             file_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
             file_handler.enviar_arquivo(caminho_arquivo)
-
-
+            time.sleep(0.1)
+        
+            
 def enviar_arquivos_existentes_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
-    blocos = 400 
-    pausa = 5
+    blocos = int(input("Quantos arquivos por vez deseja enviar?\n"))
+    pausa = int(input("Quantos segundos em cada execução?\n"))
     contador = 0
+    
     file_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
-
+    
     for root, dirs, files in os.walk(pasta_monitorada):
         for item in files:
             caminho_arquivo = os.path.join(root, item)
             file_handler.enviar_arquivo(caminho_arquivo)
             contador += 1
-            
-            # Pausa após cada bloco de 500 arquivos enviados
+            time.sleep(0.1)
             if contador % blocos == 0:
                 print(f"\nPausa de {pausa} segundos após o envio de {blocos} arquivos...")
                 time.sleep(pausa)
-                
     print("Envio de todos os arquivos concluído.")
 
 
@@ -79,6 +79,9 @@ if __name__ == "__main__":
     servidor_porta = config['servidor_porta'] 
     nome_caixa = config['nome_caixa']
     pasta_monitorada = config['path_files']
+    
+    caminho_audit = 'audit.txt'
+    event_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
 
     monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
     
@@ -102,14 +105,19 @@ if __name__ == "__main__":
                             
                 elif menu_primeira == 2:
                     monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    
                 elif menu_primeira == 3:
-                    print("Trabalhando na função de auditoria!")
+                    event_handler.processar_audit_txt_envia_arquivos(caminho_audit)
+                    monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    
                 elif menu_primeira == 4:
                     print("Encerrando processos...")
                     break
+                
                 elif menu_primeira == 404:
                     os.system('cls') # limpa o console
                     print('Ação cancelada pelo sistema, use apenas as opções do menu!')
+                    
                 else:
                     os.system('cls') # limpa o console
                     print('opção invalida, por favor selecione novamente!')
@@ -119,14 +127,18 @@ if __name__ == "__main__":
                 
                 if menu_demais == 1:
                     monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
+                    
                 elif menu_demais == 2:
-                    print("Trabalhando na função de auditoria!")
+                    event_handler.processar_audit_txt_envia_arquivos(caminho_audit)
+                    
                 elif menu_demais == 3:
                     print("Encerrando processos...")
                     break
+                
                 elif menu_demais == 404:
                     os.system('cls') # limpa o console
                     print('Ação cancelada pelo sistema, use apenas as opções do menu!')
+                    
                 else:
                     os.system('cls') # limpa o console
                     print('opção invalida, por favor selecione novamente!')
