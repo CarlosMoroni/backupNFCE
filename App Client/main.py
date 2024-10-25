@@ -41,8 +41,7 @@ def enviar_arquivos_existentes(servidor_ip, servidor_porta, pasta_monitorada, no
             caminho_arquivo = os.path.join(root, item)
             file_handler = FileHandler(servidor_ip, servidor_porta, nome_caixa, pasta_monitorada)
             file_handler.enviar_arquivo(caminho_arquivo)
-            time.sleep(0.1)
-        
+          
             
 def enviar_arquivos_existentes_em_blocos(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa):
     blocos = int(input("Quantos arquivos por vez deseja enviar?\n"))
@@ -56,7 +55,7 @@ def enviar_arquivos_existentes_em_blocos(servidor_ip, servidor_porta, pasta_moni
             caminho_arquivo = os.path.join(root, item)
             file_handler.enviar_arquivo(caminho_arquivo)
             contador += 1
-            time.sleep(0.1)
+            
             if contador % blocos == 0:
                 print(f"\nPausa de {pausa} segundos após o envio de {blocos} arquivos...")
                 time.sleep(pausa)
@@ -130,7 +129,7 @@ if __name__ == "__main__":
                     
                 elif menu_demais == 2:
                     event_handler.processar_audit_txt_envia_arquivos(caminho_audit)
-                    
+                    monitorar_pasta(servidor_ip, servidor_porta, pasta_monitorada, nome_caixa)
                 elif menu_demais == 3:
                     print("Encerrando processos...")
                     break
