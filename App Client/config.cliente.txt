@@ -1,4 +1,4 @@
-servidor_ip: 
+servidor_ip:
 servidor_porta: 
-nome_caixa: SK2/caixa02
+nome_caixa: 
 path_files: 

@@ -28,7 +28,8 @@ def menu_primeira_inicializacao():
     print("1. Primeira Inicialização")
     print("2. Modo Padrão")
     print("3. Auditoria")
-    print("4. Sair")
+    print("4. Envio de pasta especifica")
+    print("5. Sair")
     
     opcao = input("Digite o número da opção desejada: ")
     try:
@@ -42,7 +43,8 @@ def menu_demais_chamados():
     print("\nEscolha uma opção:")
     print("1. Modo Padrão")
     print("2. Auditoria")
-    print("3. Sair")
+    print("3. Envio de pasta especifica")
+    print("4. Sair")
     
     opcao = input("Digite o número da opção desejada: ")
     try:
@@ -50,6 +52,7 @@ def menu_demais_chamados():
         return numero
     except ValueError:
         return 404
+
 
 def submenu_audit_ou_primeira_inicializacao():
     print("\nEscolha uma opção:")
