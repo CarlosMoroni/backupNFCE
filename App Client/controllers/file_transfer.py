@@ -22,6 +22,7 @@ class FileHandler(FileSystemEventHandler):
         if not event.is_directory:
             print(f'Arquivo criado: {event.src_path}')
             self.enviar_arquivo(event.src_path)
+    
 
     def enviar_arquivo(self, caminho_arquivo):
         nome_arquivo = os.path.basename(caminho_arquivo)
@@ -208,7 +209,7 @@ class FileHandler(FileSystemEventHandler):
             except Exception as e:
                 print(f'Erro na execução da função, ERRO: {e}')
     
-                
+          
     def enviar_a_partir_da_pasta(self):
         """
         Envia arquivos a partir de uma pasta específica e continua enviando 

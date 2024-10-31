@@ -1,9 +1,7 @@
-import time
 import os
-import keyboard
 from utils.config import *
-from watchdog.observers import Observer
 from controllers.file_transfer import *
+
 
 if __name__ == "__main__":
     config = ler_configuracoes()
