@@ -1,4 +1,4 @@
-servidor_ip: 
-servidor_porta: 
-nome_caixa: 
-path_files: 
+servidor_ip: 192.168.4.151
+servidor_porta: 8080
+nome_caixa: caixas/teste
+path_files: C:\Users\Home\Documents\teste_backup

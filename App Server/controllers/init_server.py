@@ -1,5 +1,8 @@
+#arquivo temporariamente removido
+
 import socket
 import os
+from interface.interfaceGrafica import *  
 
 def iniciar_servidor(ip, porta, pasta_destino):
     if not os.path.exists(pasta_destino):
@@ -8,6 +11,7 @@ def iniciar_servidor(ip, porta, pasta_destino):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, int(porta)))
         s.listen(50)
+        
         print(f"Servidor escutando em {ip}:{porta}...")
 
         while True:
@@ -69,6 +73,6 @@ def iniciar_servidor(ip, porta, pasta_destino):
             except Exception as e:
                 print(f"Erro inesperado: {e}")
                 continue
-            except UnicodeDecodeError as e:
-                print(f"Erro ao decodificar os dados recebidos: {e}")
+            except UnicodeDecodeError as erro:
+                print(f"Erro ao decodificar os dados recebidos: {erro}")
                 continue
