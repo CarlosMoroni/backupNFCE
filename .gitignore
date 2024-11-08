@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+App Client/build
+App Client/dist
+App Client/main.spec
+App Client/config.cliente.txt
+App Server/config.server.txt

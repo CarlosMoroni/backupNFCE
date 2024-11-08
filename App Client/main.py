@@ -23,7 +23,7 @@ if __name__ == "__main__":
                 menu_primeira = menu_primeira_inicializacao()
 
                 if menu_primeira == 1:
-                    os.system('cls') # limpa o console
+                    os.system('cls') 
                     valor_submenu = submenu_audit_ou_primeira_inicializacao()
                     
                     if valor_submenu == 1:
@@ -31,7 +31,7 @@ if __name__ == "__main__":
                     elif valor_submenu == 2:
                         event_handler.primeira_inicializacao()
                     elif valor_submenu == 3:
-                        os.system('cls') # limpa o console
+                        os.system('cls') 
                             
                 elif menu_primeira == 2:
                     event_handler.monitorar_pasta()
@@ -43,17 +43,20 @@ if __name__ == "__main__":
                 elif menu_primeira == 4:
                     event_handler.enviar_arquivos_de_pasta_especifica()
                     event_handler.monitorar_pasta()
-
+                    
                 elif menu_primeira == 5:
+                    event_handler.manda_arquivos_atualizacao_mes_e_desliga_maquina()
+
+                elif menu_primeira == 6:
                     print("Encerrando processos...")
                     break
                 
                 elif menu_primeira == 404:
-                    os.system('cls') # limpa o console
+                    os.system('cls') 
                     print('Ação cancelada pelo sistema, use apenas as opções do menu!')
                     
                 else:
-                    os.system('cls') # limpa o console
+                    os.system('cls') 
                     print('opção invalida, por favor selecione novamente!')
                     
             else:
@@ -71,13 +74,16 @@ if __name__ == "__main__":
                     event_handler.monitorar_pasta()
                     
                 elif menu_demais == 4:
+                    event_handler.manda_arquivos_atualizacao_mes_e_desliga_maquina()
+                    
+                elif menu_demais == 5:
                     print("Encerrando processos...")
                     break
                 
                 elif menu_demais == 404:
-                    os.system('cls') # limpa o console
+                    os.system('cls') 
                     print('Ação cancelada pelo sistema, use apenas as opções do menu!')
                     
                 else:
-                    os.system('cls') # limpa o console
+                    os.system('cls') 
                     print('opção invalida, por favor selecione novamente!')

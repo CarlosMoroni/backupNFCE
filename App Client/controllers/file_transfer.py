@@ -89,8 +89,7 @@ class FileHandler(FileSystemEventHandler):
         try:
             while True:
                 time.sleep(0.5) # Mantém o programa rodando
-
-                #verifica se a tecla 'd' foi precionanda
+                
                 if keyboard.is_pressed('ctrl+alt+f12'):
                     self.mostrar_menu = True
                     observer.stop()
@@ -166,7 +165,6 @@ class FileHandler(FileSystemEventHandler):
                 time.sleep(3)
                 self.monitorar_pasta()
                     
-
         except FileNotFoundError:
             print(f"Erro: O arquivo {caminho_audit} não foi encontrado.")
         except Exception as e:
@@ -175,60 +173,54 @@ class FileHandler(FileSystemEventHandler):
     
     def enviar_arquivos_de_pasta_especifica(self):
         """
-        Envia arquivos de uma pasta específica. Pode incluir ou excluir subpastas.
-
-        Args:
-            pasta (str): Caminho da pasta para enviar arquivos.
-            incluir_subpastas (bool): Se True, envia arquivos também das subpastas.
+        Solicita ao usuário uma lista de pastas, separadas por vírgula, e se deseja incluir subpastas.
+        Retorna a lista de pastas e a opção de incluir subpastas.
         """
         try:
-            pasta_value = input("Qual a pasta que deseja enviar?\n")
-            incluir_subpastas_value = int(input("Executar envios de subpastas?, digite 1 para sim e qualquer outro para nao!\n"))
-        except ValueError as erro:
-            print(f'\n#############################################################')
-            print(f'Erro de execução do codigo, por favor digite valores corretos')
-            print(f'#############################################################\n')
+            pastas_input = input("Digite as pastas que deseja enviar, separadas por vírgula:\n")
+            incluir_subpastas = int(input("Executar envios de subpastas? Digite 1 para sim e qualquer outro número para não.\n")) == 1
+            pastas = [p.strip() for p in pastas_input.split(',')]
+        except ValueError:
+            print("\n#############################################################")
+            print("Erro de entrada. Por favor, digite valores corretos.")
+            print("#############################################################\n")
             self.enviar_arquivos_de_pasta_especifica()
             
-        pasta = self.pasta_monitorada + '/' + pasta_value
         
-        if incluir_subpastas_value == 1:
-            incluir_subpastas = True
-        else:
-            incluir_subpastas = False   
-        
-        for root, dirs, files in os.walk(pasta):
-            try:
-                if incluir_subpastas == False and root != pasta:
-                    continue  # Ignora subpastas se incluir_subpastas for False
-                
+        if pastas is None:
+            return 
+        for pasta_value in pastas:
+            pasta = os.path.join(self.pasta_monitorada, pasta_value)
+            for root, dirs, files in os.walk(pasta):
+                if not incluir_subpastas and root != pasta:
+                    continue
                 for item in files:
                     caminho_arquivo = os.path.join(root, item)
-                    self.enviar_arquivo(caminho_arquivo)
-
-            except Exception as e:
-                print(f'Erro na execução da função, ERRO: {e}')
+                    try:
+                        self.enviar_arquivo(caminho_arquivo)
+                        print(f"Enviado: {caminho_arquivo}")
+                    except Exception as e:
+                        print(f"Erro ao enviar {caminho_arquivo}: {e}")
     
-          
-    def enviar_a_partir_da_pasta(self):
-        """
-        Envia arquivos a partir de uma pasta específica e continua enviando 
-        em todos os diretórios subsequentes da `pasta_monitorada`.
-
-        Args:
-            pasta_inicio (str): Caminho da pasta de início do envio.
-        """
-        enviar = False
-        pasta_inicio_value = input('A partir de qual pasta deseja enviar?\n')
-        pasta_inicio = self.pasta_monitorada + '/' + pasta_inicio_value
+    
+    def manda_arquivos_atualizacao_mes_e_desliga_maquina(self):
+        os.system('cls')
+        print('--------------------------- ATENÇÃO ------------------------')
+        print('Após a realização dessa função a maquina sera desligada Caso')
+        print(' esteja em horario comercial, essa opção não é recomendada\n')
+        resposta = str(input('Caso deseje prosseguir digite (y) \nCaso queira abortar digite (n)\n'))
         
-        # Percorre todos os diretórios e arquivos dentro de `self.pasta_monitorada`
-        for root, dirs, files in os.walk(self.pasta_monitorada):
-
-            # Verifica se estamos na pasta de início ou se já começamos o envio
-            if root == pasta_inicio or enviar:
-                enviar = True  # Marca que estamos enviando a partir de agora
-
-                for item in files:
-                    caminho_arquivo = os.path.join(root, item)
-                    self.enviar_arquivo(caminho_arquivo)
+        if resposta == 'y':
+            self.enviar_arquivos_de_pasta_especifica()
+            
+            os.system('cls')
+            print('---------------------------------------')
+            print('             DESLIGANDO')
+            print('---------------------------------------')
+            os.system('shutdown -s -t 00')
+        
+        elif resposta == 'n':
+            self.monitorar_pasta()
+        
+        else:
+            self.manda_arquivos_atualizacao_mes_e_desliga_maquina()

@@ -19,17 +19,17 @@ def captura_dados_config_cliente_txt():
     nome_caixa = config['nome_caixa']
     pasta_monitorada = config['path_files']
     
-    return servidor_ip, servidor_porta, nome_caixa, pasta_monitorada
-   
-    
-    
+    return servidor_ip, servidor_porta, nome_caixa, pasta_monitorada 
+
+
 def menu_primeira_inicializacao():
     print("\nEscolha uma opção:")
     print("1. Primeira Inicialização")
     print("2. Modo Padrão")
     print("3. Auditoria")
     print("4. Envio de pasta especifica")
-    print("5. Sair")
+    print("5. Envio de pasta especifica e desligamento do computador")
+    print("6. Sair")
     
     opcao = input("Digite o número da opção desejada: ")
     try:
@@ -44,7 +44,8 @@ def menu_demais_chamados():
     print("1. Modo Padrão")
     print("2. Auditoria")
     print("3. Envio de pasta especifica")
-    print("4. Sair")
+    print("4. Envio de pasta especifica e desligamento do computador")
+    print("5. Sair")
     
     opcao = input("Digite o número da opção desejada: ")
     try:
