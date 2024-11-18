@@ -4,6 +4,7 @@ from controllers.file_transfer import *
 
 
 if __name__ == "__main__":
+    minimizar_janela()
     config = ler_configuracoes()
     servidor_ip = config['servidor_ip']
     servidor_porta = config['servidor_porta'] 

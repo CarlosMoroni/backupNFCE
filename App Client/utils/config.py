@@ -1,4 +1,5 @@
 import os
+import ctypes
 
 caminho_txt_audit = "audit.txt"
 
@@ -87,6 +88,17 @@ def checa_arquivo_audit():
     except Exception as e:
         print(f"Erro ao verificar o arquivo: {e}")
         return True
+    
+
+def minimizar_janela():
+    """
+    Minimiza a janela do console no Windows.
+    """
+    # Identificador da janela do console
+    hWnd = ctypes.windll.kernel32.GetConsoleWindow()
+    if hWnd:
+        # Comando para minimizar a janela
+        ctypes.windll.user32.ShowWindow(hWnd, 6)  # SW_MINIMIZE = 6
 
 
 ascii_art = r"""
